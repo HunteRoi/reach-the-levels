@@ -1,11 +1,25 @@
 import React from 'react';
-
-import styles from './Footer.module.css';
+import { Typography } from '@mui/material';
+import MuiLink from '@mui/material/Link';
 
 export default function Footer() {
 	return (
-		<footer className={styles.footer}>
-			<a>footer with a link</a>
+		<footer>
+			<Typography
+				variant='body2'
+				color='GrayText'
+				align='center'
+				paragraph={true}>
+				Made with ♥ by{' '}
+				<MuiLink
+					color='inherit'
+					href='https://github.com/hunteroi'
+					target='_blank'
+					rel='noopener'>
+					Tinaël DEVRESSE
+				</MuiLink>{' '}
+				| {new Date().getFullYear()}
+			</Typography>
 		</footer>
 	);
 }

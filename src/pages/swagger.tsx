@@ -16,6 +16,7 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
 		title: 'NextJS Swagger',
 		version: packageInfo.version,
 	});
+
 	return {
 		props: {
 			spec,
