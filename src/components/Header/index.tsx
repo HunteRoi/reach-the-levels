@@ -12,17 +12,13 @@ import MenuIcon from '@mui/icons-material/Menu';
 
 import { NavItem } from '../NavItem';
 
-export type Page = {
-	href: string;
-	icon: React.ReactNode;
-	title: string;
-};
+import type { Page } from '../';
 
 type Props = {
 	pages: Page[];
 };
 
-const Header: React.FC<Props> = ({ pages }) => {
+export const Header: React.FC<Props> = ({ pages }) => {
 	const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
 		null
 	);
@@ -115,5 +111,3 @@ const Header: React.FC<Props> = ({ pages }) => {
 		</AppBar>
 	);
 };
-
-export default Header;

@@ -5,11 +5,13 @@ import Head from 'next/head';
 import { CacheProvider, EmotionCache } from '@emotion/react';
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
+import HomeIcon from '@mui/icons-material/Home';
+import QueryStatsIcon from '@mui/icons-material/QueryStats';
 
-import '../styles/globals.css';
-import Layout from '../components/Layout';
-import createEmotionCache from '../utils/createEmotionCache';
-import theme from '../styles/theme';
+import '@styles/globals.css';
+import { Layout } from '@components';
+import createEmotionCache from '@utils/createEmotionCache';
+import theme from '@styles/theme';
 
 type NextPageWithLayout = NextPage & {
 	getLayout?: (page: ReactElement) => ReactNode;
@@ -49,7 +51,17 @@ function MyApp({
 					{/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
 					<CssBaseline />
 
-					<Layout>{page}</Layout>
+					<Layout
+						pages={[
+							{ href: '/', icon: <HomeIcon />, title: 'Home' },
+							{
+								href: '/stats',
+								icon: <QueryStatsIcon />,
+								title: 'Statistics',
+							},
+						]}>
+						{page}
+					</Layout>
 				</ThemeProvider>
 			</CacheProvider>
 		));

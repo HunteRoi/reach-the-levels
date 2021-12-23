@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 
-import db from '../../../../../../data/db';
-import { Level } from '../../../../../../models';
+import db from '@data';
+import { Level } from '@models';
 
 /**
  * @openapi

@@ -2,7 +2,7 @@ import React from 'react';
 import { Typography } from '@mui/material';
 import MuiLink from '@mui/material/Link';
 
-export default function Footer() {
+export function Footer() {
 	return (
 		<footer>
 			<Typography

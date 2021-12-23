@@ -1,6 +1,6 @@
 import { FindCallback, JsonDB } from 'node-json-db';
 
-import { Level, Project } from '../models';
+import { Level, Project } from '@models';
 
 export class JSONDatabaseService {
 	private readonly database: JsonDB;

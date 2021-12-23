@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 
-import db from '../../../../data/db';
+import db from '@data';
 
 /**
  * @openapi

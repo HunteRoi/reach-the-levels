@@ -1,7 +1,7 @@
 import type { NextPage } from 'next';
 import { Box, Typography, Button } from '@mui/material';
 
-import { Link } from '../components';
+import { Link } from '@components';
 
 const Home: NextPage = () => {
 	return (
