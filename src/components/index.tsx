@@ -1,11 +1,8 @@
-export type Page = {
-	href: string;
-	icon: React.ReactNode;
-	title: string;
-};
-
 export * from './Footer';
 export * from './Header';
 export * from './Layout';
 export * from './Link';
-export * from './NavItem';
+export * from './ErrorComponent';
+export * from './LoadingComponent';
+export * from './NoRowsOverlay';
+export * from './GoBackComponent';

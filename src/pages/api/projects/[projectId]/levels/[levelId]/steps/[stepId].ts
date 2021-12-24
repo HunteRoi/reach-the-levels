@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 import db from '@data';
-import { Level } from '@models';
+import { setStepAsDone } from '@utils/stepUtils';
 
 /**
  * @openapi
@@ -52,26 +52,12 @@ export default async function handler(
 		case 'POST':
 			try {
 				const project = await db.readProject(projectId as string);
-				const levelEntity = project.levels.find(
+				const level = project.levels.find(
 					(level) => level.id === levelId
 				);
-				if (!levelEntity) throw new Error('Level not found');
-				const level = new Level(
-					levelEntity.id,
-					levelEntity.name,
-					levelEntity.description,
-					levelEntity.steps,
-					levelEntity.award,
-					levelEntity.previousLevelId,
-					levelEntity.previousLevelId
-						? project.levels.find(
-								(level) =>
-									level.id === levelEntity.previousLevelId
-						  )
-						: undefined
-				);
+				if (!level) throw new Error('Level not found');
 
-				const success = level.setStepAsDone(stepId as string);
+				const success = setStepAsDone(level, stepId as string);
 				if (success) await db.writeProject(project);
 				else
 					throw new Error(
@@ -80,7 +66,7 @@ export default async function handler(
 
 				res.status(202).end();
 			} catch (error: any) {
-				res.status(400).json({ error: error.message });
+				res.status(400).json({ message: error.message });
 			}
 			break;
 		default:

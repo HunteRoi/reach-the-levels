@@ -17,6 +17,7 @@
 		"allowSyntheticDefaultImports": true,
 		"baseUrl": "./src",
 		"paths": {
+			"@renderers": ["renderers/"],
 			"@components": ["components/"],
 			"@data": ["data/db.ts"],
 			"@models": ["models/"],

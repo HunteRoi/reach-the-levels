@@ -1,7 +1,11 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 import db from '@data';
-import { Level } from '@models';
+import { allStepsAreDone, nonOptionalStepsAreDone } from '@utils/levelUtils';
+import {
+	calculateCompletionRate,
+	calculateCompletionRateWithoutOptionals,
+} from '@utils/stepUtils';
 
 /**
  * @openapi
@@ -47,27 +51,21 @@ export default async function handler(
 		case 'GET':
 			try {
 				const project = await db.readProject(projectId as string);
-				const levelEntity = project.levels.find(
+				const level = project.levels.find(
 					(level) => level.id === levelId
 				);
-				if (!levelEntity) throw new Error('Not found');
-				const level = new Level(
-					levelEntity.id,
-					levelEntity.name,
-					levelEntity.description,
-					levelEntity.steps,
-					levelEntity.award
-				);
+				if (!level) throw new Error('Not found');
 
 				res.status(200).json({
 					...level,
-					completionRate: level.completionRateWithoutOptionalSteps(),
-					fullCompletionRate: level.completionRate(),
-					allStepsDone: level.allStepsAreDone(),
-					allNonOptionalStepsDone: level.nonOptionalStepsAreDone(),
+					progress: calculateCompletionRate(level.steps),
+					progressWithoutOptionals:
+						calculateCompletionRateWithoutOptionals(level.steps),
+					allStepsDone: allStepsAreDone(level),
+					allNonOptionalStepsDone: nonOptionalStepsAreDone(level),
 				});
 			} catch (error: any) {
-				res.status(404).json({ error: error.message });
+				res.status(404).json({ message: error.message });
 			}
 			break;
 		default:

@@ -13,26 +13,25 @@
                             "id": "034c2a78-aed7-429a-9965-567a1e148bc5",
                             "name": "Code source",
                             "description": "Avoir accès au code source de l'ERP",
-                            "isDone": false,
                             "done": false
                         },
                         {
                             "id": "66aed063-069b-4d48-a450-67cadc8cd422",
                             "name": "Environnement de dev",
                             "description": "Installer un environnement de développement",
-                            "isDone": false
+                            "done": false
                         },
                         {
                             "id": "dd39a5aa-7316-4158-b672-81692709a574",
                             "name": "Fonctionnement",
                             "description": "Comprendre le fonctionnement de l'application en testant des choses, en demandant aux utilisateurs finaux et/ou aux développeurs en charge, etc.",
-                            "isDone": false
+                            "done": false
                         },
                         {
                             "id": "33c1b87a-5764-454a-bf3a-ba8df5654567",
                             "name": "Documenter",
                             "description": "Écrire une documentation sur le fonctionnement de l'application",
-                            "isDone": false
+                            "done": false
                         }
                     ]
                 },
@@ -47,25 +46,25 @@
                             "id": "650f031d-4a99-4b2d-acc3-cc18a57dc7b5",
                             "name": "Code source",
                             "description": "Avoir accès au code source de cAUTHpyx",
-                            "isDone": false
+                            "done": false
                         },
                         {
                             "id": "fb620796-5196-4814-a751-6013a2f9c981",
                             "name": "Environnement de dev",
                             "description": "Installer un environnement de développement",
-                            "isDone": false
+                            "done": false
                         },
                         {
                             "id": "5b7c5166-4426-4ce2-a52b-d62a1887b89a",
                             "name": "Fonctionnement",
                             "description": "Comprendre le fonctionnement de l'application en testant des choses, en demandant aux utilisateurs finaux et/ou aux développeurs en charge, etc.",
-                            "isDone": false
+                            "done": false
                         },
                         {
                             "id": "24a90baf-331e-429b-bb00-9124f3788375",
                             "name": "Documenter",
                             "description": "Écrire une documentation sur le fonctionnement de l'application",
-                            "isDone": false
+                            "done": false
                         }
                     ]
                 },
@@ -80,13 +79,13 @@
                             "id": "5109b348-d365-406e-aede-a58a903b8833",
                             "name": "ERP",
                             "description": "Analyser et documenter les documents et informations venant de l'ERP",
-                            "isDone": false
+                            "done": false
                         },
                         {
                             "id": "78f12dbe-d08d-46f1-aeda-3c6ed3e02b3c",
                             "name": "Autre",
                             "description": "Analyser et documenter les documents et informations venant d'ailleurs",
-                            "isDone": false
+                            "done": false
                         }
                     ]
                 },
@@ -101,19 +100,19 @@
                             "id": "ca7c93fb-5b7c-40eb-95d9-d2ef43eb0ff2",
                             "name": "Besoins",
                             "description": "Parler au(x) client(s) et comprendre les besoins. Comprendre comment la solution actuelle répond à la problématique, et comment l'automatiser peut être plus efficace.",
-                            "isDone": false
+                            "done": false
                         },
                         {
                             "id": "976e1ef3-8f9e-46a0-a3d5-d3332373bc77",
                             "name": "Documenter",
                             "description": "Écrire un document expliquant les besoins et nécessités",
-                            "isDone": false
+                            "done": false
                         },
                         {
                             "id": "5b83a105-222a-4848-8640-897beb8cda9a",
                             "name": "Écrans",
                             "description": "Réaliser des sketchs et maquettes d'écran",
-                            "isDone": false
+                            "done": false
                         }
                     ]
                 },
@@ -128,33 +127,33 @@
                             "id": "e0fb9c88-31e4-41ea-986a-76c98f5fbcca",
                             "name": "Technologie",
                             "description": "Choisir la technologie et argumenter son choix",
-                            "isDone": false,
+                            "done": false,
                             "optional": true
                         },
                         {
                             "id": "1435b4a2-f964-4af6-9206-dcdf4dbf5350",
                             "name": "Fonctionnalités",
                             "description": "Définir les fonctionnalités et avancer en mode Agile (réanalyser/analyser en profondeur chaque fonctionnalité du sprint)",
-                            "isDone": false
+                            "done": false
                         },
                         {
                             "id": "165afd40-692a-4ab1-af83-2071ae397ff1",
                             "name": "Dev",
                             "description": "Développer les fonctionnalités",
-                            "isDone": false
+                            "done": false
                         },
                         {
                             "id": "e674d1ee-6ac5-41a5-aa19-67c4fc6a726f",
                             "name": "Test",
                             "description": "Tester les fonctionnalités (unit testing)",
-                            "isDone": false,
+                            "done": false,
                             "optional": true
                         },
                         {
                             "id": "cc5ed860-f32d-4edb-a3d8-4a45599bdd76",
                             "name": "Démo",
                             "description": "Faire une démonstration des avancées du développement",
-                            "isDone": false
+                            "done": false
                         }
                     ]
                 },
@@ -169,26 +168,25 @@
                             "id": "aef392ce-a160-4dc5-92a5-4b4ace9dde4c",
                             "name": "Structurer",
                             "description": "Structurer convenablement sa documentation avec une table des matières, une introduction, un contenu principal et une conclusion.",
-                            "isDone": false,
                             "done": false
                         },
                         {
                             "id": "1628a73b-d803-461d-8170-7df644e2ff03",
                             "name": "Écrire",
                             "description": "Assembler toutes les informations documentés jusqu'à présent dans un document qui a du sens. Ajouter du contenu si nécessaire, restructurer, paraphraser, etc.",
-                            "isDone": false
+                            "done": false
                         },
                         {
                             "id": "8147456b-a3e8-451d-8a09-2ede60cabc96",
                             "name": "Images et exemples",
                             "description": "Fournir des exemples (concrets ou imagés), des images et autres informations pouvant éclairer des points complexes.",
-                            "isDone": false
+                            "done": false
                         },
                         {
                             "id": "40feab9c-6c03-41a5-a8ed-dd5ae9bafdfd",
                             "name": "Relecture",
                             "description": "Faire relire et vérifier le document par son maître de stage",
-                            "isDone": false,
+                            "done": false,
                             "optional": true
                         }
                     ]
