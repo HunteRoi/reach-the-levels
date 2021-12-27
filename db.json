@@ -8,6 +8,7 @@
                     "id": "43bb4a1b-da0b-4ff6-8b37-2efc566c0fa0",
                     "name": "ERP",
                     "description": "Analyser l'ERP",
+                    "nextLevelId": "88f4cafc-5ae2-409d-8d77-dbfd5a74ad04",
                     "steps": [
                         {
                             "id": "034c2a78-aed7-429a-9965-567a1e148bc5",
@@ -39,8 +40,9 @@
                     "id": "88f4cafc-5ae2-409d-8d77-dbfd5a74ad04",
                     "name": "cAUTHpyx",
                     "description": "Analyser cAUTHpyx",
-                    "award": "1 pâtisserie au choix",
+                    "reward": "1 pâtisserie au choix",
                     "previousLevelId": "43bb4a1b-da0b-4ff6-8b37-2efc566c0fa0",
+                    "nextLevelId": "8e27602f-c9cf-4d63-bb6e-60dd442926e7",
                     "steps": [
                         {
                             "id": "650f031d-4a99-4b2d-acc3-cc18a57dc7b5",
@@ -72,8 +74,9 @@
                     "id": "8e27602f-c9cf-4d63-bb6e-60dd442926e7",
                     "name": "Documents extérieurs",
                     "description": "Analyser les documents extérieurs à l'ERP",
-                    "award": "1 dîner (fast-food/pizzeria)",
+                    "reward": "1 dîner (fast-food/pizzeria)",
                     "previousLevelId": "88f4cafc-5ae2-409d-8d77-dbfd5a74ad04",
+                    "nextLevelId": "fe62557e-482c-465a-8a23-009774e347f7",
                     "steps": [
                         {
                             "id": "5109b348-d365-406e-aede-a58a903b8833",
@@ -93,8 +96,9 @@
                     "id": "fe62557e-482c-465a-8a23-009774e347f7",
                     "name": "Dashboard sur le Forecast: partie 1",
                     "description": "Analyser le projet à réaliser",
-                    "award": "1 restaurant",
+                    "reward": "1 restaurant",
                     "previousLevelId": "8e27602f-c9cf-4d63-bb6e-60dd442926e7",
+                    "nextLevelId": "17c3b8a9-00b7-4cec-b519-79a10769f247",
                     "steps": [
                         {
                             "id": "ca7c93fb-5b7c-40eb-95d9-d2ef43eb0ff2",
@@ -120,8 +124,9 @@
                     "id": "17c3b8a9-00b7-4cec-b519-79a10769f247",
                     "name": "Dashboard sur le Forecast: partie 2",
                     "description": "Développer le projet",
-                    "award": "1 carte-cadeau de 50€",
+                    "reward": "1 carte-cadeau de 50€",
                     "previousLevelId": "fe62557e-482c-465a-8a23-009774e347f7",
+                    "nextLevelId": "c888761c-f3c5-4ecb-8e26-d5628ed1940b",
                     "steps": [
                         {
                             "id": "e0fb9c88-31e4-41ea-986a-76c98f5fbcca",
@@ -161,7 +166,7 @@
                     "id": "c888761c-f3c5-4ecb-8e26-d5628ed1940b",
                     "name": "Dashboard sur le forecast: partie 3",
                     "description": "Réaliser une documentation complète",
-                    "award": "1 week-end 'wonderbox'",
+                    "reward": "1 week-end 'wonderbox'",
                     "previousLevelId": "17c3b8a9-00b7-4cec-b519-79a10769f247",
                     "steps": [
                         {

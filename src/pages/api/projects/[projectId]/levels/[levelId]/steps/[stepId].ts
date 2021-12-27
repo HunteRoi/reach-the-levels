@@ -1,7 +1,11 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 import db from '@data';
-import { setStepAsDone } from '@utils/stepUtils';
+import {
+	nextLevelStepsAreNotDone,
+	previousLevelStepsAreDone,
+} from '@utils/stepUtils';
+import { Level } from 'models';
 
 /**
  * @openapi
@@ -51,18 +55,49 @@ export default async function handler(
 	switch (method) {
 		case 'POST':
 			try {
-				const project = await db.readProject(projectId as string);
-				const level = project.levels.find(
+				const currentProject = await db.readProject(
+					projectId as string
+				);
+				const currentLevel = currentProject.levels.find(
 					(level) => level.id === levelId
 				);
-				if (!level) throw new Error('Level not found');
+				if (!currentLevel) throw new Error('Level not found');
+				currentLevel.previousLevel = currentProject.levels.find(
+					(level) => level.id === currentLevel.previousLevelId
+				);
+				currentLevel.nextLevel = currentProject.levels.find(
+					(level) => level.id === currentLevel.nextLevelId
+				);
 
-				const success = setStepAsDone(level, stepId as string);
-				if (success) await db.writeProject(project);
-				else
-					throw new Error(
-						'Step already done or previous level not finished'
-					);
+				const stepToEdit = currentLevel.steps.find(
+					(step) => step.id === stepId
+				);
+				if (stepToEdit) {
+					if (stepToEdit.done) {
+						if (
+							stepToEdit.optional ||
+							nextLevelStepsAreNotDone(currentLevel)
+						) {
+							stepToEdit.done = false;
+						} else {
+							throw new Error(
+								'One or more mandatory steps from the next level are already done'
+							);
+						}
+					} else {
+						if (previousLevelStepsAreDone(currentLevel)) {
+							stepToEdit.done = true;
+						} else {
+							throw new Error(
+								'All mandatory steps from the previous level are not done yet'
+							);
+						}
+					}
+				} else {
+					throw new Error('Step not found');
+				}
+
+				await db.writeProject(currentProject);
 
 				res.status(202).end();
 			} catch (error: any) {

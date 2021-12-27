@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import type { NextPage } from 'next';
 import useSWR, { Fetcher } from 'swr';
 import axios from 'axios';
+import { IconButton, Typography } from '@mui/material';
 import {
 	DataGrid,
 	GridEnrichedColDef,
@@ -17,7 +18,6 @@ import {
 	NoRowsOverlay,
 } from '@components';
 import { Project, ErrorResponse } from '@models';
-import { IconButton } from '@mui/material';
 
 const fetcher: Fetcher<Project[], string> = (url: string) =>
 	axios.get(url).then((res) => res.data);
@@ -85,6 +85,9 @@ const Home: NextPage = () => {
 
 	return (
 		<div style={{ height: 400, width: '100%' }}>
+			<Typography variant='h4' align='center' sx={{ py: 2 }}>
+				Projects
+			</Typography>
 			<DataGrid
 				columns={columns}
 				rows={data}

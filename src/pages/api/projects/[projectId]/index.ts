@@ -2,7 +2,12 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 
 import db from '@data';
 
-import { levelIsDone, levelIsFullyDone } from '@utils/levelUtils';
+import {
+	levelIsDone,
+	levelIsFullyDone,
+	generateLevelWithStats,
+} from '@utils/levelUtils';
+import { generateProjectWithStats } from '@utils/projectUtils';
 
 /**
  * @openapi
@@ -36,7 +41,7 @@ export default async function handler(
 ) {
 	const {
 		method,
-		query: { projectId },
+		query: { projectId, withLevels, withSteps },
 	} = req;
 
 	switch (method) {
@@ -44,22 +49,13 @@ export default async function handler(
 			try {
 				const project = await db.readProject(projectId as string);
 
-				res.status(200).json({
-					...project,
-					progress: project.levels.reduce(
-						(seed, level) =>
-							(seed += levelIsFullyDone(level) ? 1 : 0),
-						0
-					),
-					progressWithoutOptionals: project.levels.reduce(
-						(seed, level) => (seed += levelIsDone(level) ? 1 : 0),
-						0
-					),
-					levels: project.levels.map((level) => ({
-						...level,
-						steps: null,
-					})),
-				});
+				res.status(200).json(
+					generateProjectWithStats(
+						project,
+						withLevels === 'true',
+						withSteps === 'true'
+					)
+				);
 			} catch (error: any) {
 				res.status(404).json({ message: error.message });
 			}

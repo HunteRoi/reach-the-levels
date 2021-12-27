@@ -5,8 +5,6 @@ import Head from 'next/head';
 import { CacheProvider, EmotionCache } from '@emotion/react';
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
-import HomeIcon from '@mui/icons-material/Home';
-import QueryStatsIcon from '@mui/icons-material/QueryStats';
 
 import '@styles/globals.css';
 import { Layout } from '@components';
@@ -51,17 +49,7 @@ function MyApp({
 					{/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
 					<CssBaseline />
 
-					<Layout
-						pages={[
-							{ href: '/', icon: <HomeIcon />, title: 'Home' },
-							{
-								href: '/stats',
-								icon: <QueryStatsIcon />,
-								title: 'Statistics',
-							},
-						]}>
-						{page}
-					</Layout>
+					<Layout>{page}</Layout>
 				</ThemeProvider>
 			</CacheProvider>
 		));

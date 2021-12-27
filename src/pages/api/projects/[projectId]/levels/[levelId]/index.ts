@@ -1,11 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 import db from '@data';
-import { allStepsAreDone, nonOptionalStepsAreDone } from '@utils/levelUtils';
-import {
-	calculateCompletionRate,
-	calculateCompletionRateWithoutOptionals,
-} from '@utils/stepUtils';
+import { generateLevelWithStats } from '@utils/levelUtils';
 
 /**
  * @openapi
@@ -44,7 +40,7 @@ export default async function handler(
 ) {
 	const {
 		method,
-		query: { projectId, levelId },
+		query: { projectId, levelId, withSteps },
 	} = req;
 
 	switch (method) {
@@ -56,14 +52,9 @@ export default async function handler(
 				);
 				if (!level) throw new Error('Not found');
 
-				res.status(200).json({
-					...level,
-					progress: calculateCompletionRate(level.steps),
-					progressWithoutOptionals:
-						calculateCompletionRateWithoutOptionals(level.steps),
-					allStepsDone: allStepsAreDone(level),
-					allNonOptionalStepsDone: nonOptionalStepsAreDone(level),
-				});
+				res.status(200).json(
+					generateLevelWithStats(level, withSteps === 'true')
+				);
 			} catch (error: any) {
 				res.status(404).json({ message: error.message });
 			}

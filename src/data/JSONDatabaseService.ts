@@ -24,6 +24,10 @@ export class JSONDatabaseService {
 	}
 
 	async writeProject(project: Project) {
+		for (var level of project.levels) {
+			delete level.previousLevel;
+			delete level.nextLevel;
+		}
 		return this.write('/projects', project, true, 'id');
 	}
 

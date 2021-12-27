@@ -6,3 +6,5 @@ export * from './ErrorComponent';
 export * from './LoadingComponent';
 export * from './NoRowsOverlay';
 export * from './GoBackComponent';
+export * from './StepComponent';
+export * from './LevelComponent';
