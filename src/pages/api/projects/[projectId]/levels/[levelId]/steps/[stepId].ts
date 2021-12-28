@@ -1,11 +1,10 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 
-import db from '@data';
+import db, { isPrismaError } from '@data/db';
 import {
 	nextLevelStepsAreNotDone,
 	previousLevelStepsAreDone,
 } from '@utils/stepUtils';
-import { Level } from 'models';
 
 /**
  * @openapi
@@ -55,53 +54,54 @@ export default async function handler(
 	switch (method) {
 		case 'POST':
 			try {
-				const currentProject = await db.readProject(
-					projectId as string
-				);
-				const currentLevel = currentProject.levels.find(
-					(level) => level.id === levelId
-				);
-				if (!currentLevel) throw new Error('Level not found');
-				currentLevel.previousLevel = currentProject.levels.find(
-					(level) => level.id === currentLevel.previousLevelId
-				);
-				currentLevel.nextLevel = currentProject.levels.find(
-					(level) => level.id === currentLevel.nextLevelId
-				);
+				const currentStep = await db.step.findUnique({
+					where: { id: stepId as string },
+					include: {
+						Level: {
+							include: {
+								previousLevel: { include: { steps: true } },
+								nextLevel: { include: { steps: true } },
+							},
+						},
+					},
+				});
+				if (!currentStep)
+					throw new Error(`Step ${stepId as string} not found`);
 
-				const stepToEdit = currentLevel.steps.find(
-					(step) => step.id === stepId
-				);
-				if (stepToEdit) {
-					if (stepToEdit.done) {
-						if (
-							stepToEdit.optional ||
-							nextLevelStepsAreNotDone(currentLevel)
-						) {
-							stepToEdit.done = false;
-						} else {
-							throw new Error(
-								'One or more mandatory steps from the next level are already done'
-							);
-						}
+				if (currentStep.done) {
+					if (
+						currentStep.optional ||
+						nextLevelStepsAreNotDone(currentStep.Level)
+					) {
+						currentStep.done = false;
 					} else {
-						if (previousLevelStepsAreDone(currentLevel)) {
-							stepToEdit.done = true;
-						} else {
-							throw new Error(
-								'All mandatory steps from the previous level are not done yet'
-							);
-						}
+						throw new Error(
+							'One or more mandatory steps from the next level are already done'
+						);
 					}
 				} else {
-					throw new Error('Step not found');
+					if (previousLevelStepsAreDone(currentStep.Level)) {
+						currentStep.done = true;
+					} else {
+						throw new Error(
+							'All mandatory steps from the previous level are not done yet'
+						);
+					}
 				}
 
-				await db.writeProject(currentProject);
+				await db.step.update({
+					where: { id: stepId as string },
+					data: { done: currentStep.done },
+				});
 
 				res.status(202).end();
 			} catch (error: any) {
-				res.status(400).json({ message: error.message });
+				if (isPrismaError(error)) {
+					res.status(500).json({ message: error.message });
+				} else {
+					res.status(400).json({ message: error.message });
+				}
+				console.error(error);
 			}
 			break;
 		default:

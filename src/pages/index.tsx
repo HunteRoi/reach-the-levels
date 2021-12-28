@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import type { NextPage } from 'next';
 import useSWR, { Fetcher } from 'swr';
 import axios from 'axios';
@@ -17,9 +17,9 @@ import {
 	LoadingComponent,
 	NoRowsOverlay,
 } from '@components';
-import { Project, ErrorResponse } from '@models';
+import { PaginatedResponse, Project, ErrorResponse } from '@models';
 
-const fetcher: Fetcher<Project[], string> = (url: string) =>
+const fetcher: Fetcher<PaginatedResponse<Project>, string> = (url: string) =>
 	axios.get(url).then((res) => res.data);
 
 const columns: GridEnrichedColDef[] = [
@@ -75,8 +75,11 @@ const columns: GridEnrichedColDef[] = [
 ];
 
 const Home: NextPage = () => {
-	const { data, error } = useSWR<Project[], ErrorResponse>(
-		'/api/projects',
+	const [pageSize, setPageSize] = useState(10);
+	const [page, setPage] = useState(0);
+
+	const { data, error } = useSWR<PaginatedResponse<Project>, ErrorResponse>(
+		`/api/projects?pageSize=${pageSize}&page=${page}`,
 		fetcher
 	);
 
@@ -90,7 +93,16 @@ const Home: NextPage = () => {
 			</Typography>
 			<DataGrid
 				columns={columns}
-				rows={data}
+				rows={data.items ?? []}
+				rowCount={data.count}
+				loading={!data}
+				page={data.page}
+				pageSize={data.pageSize}
+				rowsPerPageOptions={[1, 5, 10, 20, 100]}
+				paginationMode='server'
+				onPageChange={(newPage) => setPage(newPage)}
+				onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
+				pagination
 				components={{
 					NoRowsOverlay: NoRowsOverlay,
 				}}

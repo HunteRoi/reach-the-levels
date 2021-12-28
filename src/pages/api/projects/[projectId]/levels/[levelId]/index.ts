@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 
-import db from '@data';
+import db, { isPrismaError } from '@data/db';
 import { generateLevelWithStats } from '@utils/levelUtils';
 
 /**
@@ -46,17 +46,35 @@ export default async function handler(
 	switch (method) {
 		case 'GET':
 			try {
-				const project = await db.readProject(projectId as string);
+				const project = await db.project.findUnique({
+					where: { id: projectId as string },
+					include: {
+						levels: {
+							include: {
+								steps: true,
+							},
+						},
+					},
+				});
+				if (!project)
+					throw new Error(`Project ${projectId as string} not found`);
+
 				const level = project.levels.find(
 					(level) => level.id === levelId
 				);
-				if (!level) throw new Error('Not found');
+				if (!level)
+					throw new Error(`Level ${levelId as string} not found`);
 
 				res.status(200).json(
 					generateLevelWithStats(level, withSteps === 'true')
 				);
 			} catch (error: any) {
-				res.status(404).json({ message: error.message });
+				if (isPrismaError(error)) {
+					res.status(500).json({ message: error.message });
+				} else {
+					res.status(400).json({ message: error.message });
+				}
+				console.error(error);
 			}
 			break;
 		default:

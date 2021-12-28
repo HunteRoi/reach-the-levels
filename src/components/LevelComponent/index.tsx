@@ -10,19 +10,20 @@ import {
 } from '@mui/lab';
 import DiamondIcon from '@mui/icons-material/Diamond';
 
-import { Level } from '@models';
+import { LevelWithSteps } from '@data/models';
+import { Level, Step } from '@models';
 import { levelIsDone, levelIsFullyDone } from '@utils/levelUtils';
 import { StepComponent } from 'components';
 
 const getColor = (level: Level, appendSuffix: boolean = false) =>
-	levelIsDone(level)
-		? levelIsFullyDone(level)
+	levelIsDone(level as unknown as LevelWithSteps)
+		? levelIsFullyDone(level as unknown as LevelWithSteps)
 			? 'success'
 			: 'warning'
 		: 'grey';
 const getThemeColor = (level: Level) => getColor(level) + '.main';
 const getVariant = (level: Level) =>
-	levelIsDone(level) ? 'filled' : 'outlined';
+	levelIsDone(level as unknown as LevelWithSteps) ? 'filled' : 'outlined';
 
 type Prop = {
 	handleChange: (stepId: string) => Promise<boolean>;
@@ -47,7 +48,7 @@ export const LevelComponent: React.FC<Prop> = ({
 						variant='standard'>
 						<FormLabel component='legend'>Steps</FormLabel>
 						<FormGroup>
-							{level.steps.map((step) => (
+							{level.steps.map((step: Step) => (
 								<StepComponent
 									key={step.id}
 									{...step}

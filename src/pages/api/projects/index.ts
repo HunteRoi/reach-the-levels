@@ -1,14 +1,7 @@
-import { generateProjectWithStats } from '@utils/projectUtils';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
-import db from '@data';
-
-import {
-	calculateCompletionRate,
-	calculateCompletionRateWithoutOptionals,
-	levelIsDone,
-	levelIsFullyDone,
-} from '@utils/levelUtils';
+import db, { isPrismaError } from '@data/db';
+import { generateProjectWithStats } from '@utils/projectUtils';
 
 /**
  * @openapi
@@ -23,6 +16,8 @@ import {
  *         type: string
  *       done:
  *         type: boolean
+ *       optional:
+ *         type: boolean
  *
  *   Level:
  *     properties:
@@ -32,13 +27,15 @@ import {
  *         type: string
  *       description:
  *         type: string
+ * 			 reward:
+ * 				 type: string
+ * 			 progress:
+ * 				 type: number
+ * 	     progressWithoutOptionals:
+ * 			   type: number
  *       steps:
  *         type: array
  *         $ref: '#/definitions/Step'
- *       previousLevelId:
- *         type: string
- *       nextLevelId:
- *         type: string
  *
  *   Project:
  *     properties:
@@ -46,13 +43,19 @@ import {
  *         type: string
  *       name:
  *         type: string
+ * 			 description:
+ * 				 type: string
+ * 			 progress:
+ * 				 type: number
+ * 	     progressWithoutOptionals:
+ * 			   type: number
  *       levels:
  *         type: array
  *         $ref: '#/definitions/Level'
  *
  *   Error:
  *     properties:
- *       error:
+ *       message:
  *         type: string
  */
 
@@ -90,20 +93,53 @@ export default async function handler(
 ) {
 	const {
 		method,
-		query: { withLevels },
+		query: { withLevels, pageSize, page },
 	} = req;
+
+	const pageNb = parseInt(page as string);
+	const realPageNumber = isNaN(pageNb) || pageNb < 0 ? 0 : pageNb;
+	const pageSizeNb = parseInt(pageSize as string);
+	const take = isNaN(pageSizeNb) || pageSizeNb < 0 ? 10 : pageSizeNb;
+	const skip = realPageNumber * take;
 
 	switch (method) {
 		case 'GET':
 			try {
-				const projects = await db.readProjects();
-				res.status(200).json(
-					projects.map((project) =>
-						generateProjectWithStats(project, withLevels === 'true')
-					)
-				);
+				const count = await db.project.count();
+				const projects = await db.project.findMany({
+					take,
+					skip,
+					include: {
+						levels: {
+							include: {
+								steps: true,
+							},
+						},
+					},
+					orderBy: {
+						name: 'asc',
+					},
+				});
+
+				res.status(200).json({
+					page: pageNb,
+					pageSize: take,
+					count,
+					items: projects.map((project) =>
+						generateProjectWithStats(
+							project,
+							withLevels === 'true',
+							false
+						)
+					),
+				});
 			} catch (error: any) {
-				res.status(404).json({ message: error.message });
+				if (isPrismaError(error)) {
+					res.status(500).json({ message: error.message });
+				} else {
+					res.status(400).json({ message: error.message });
+				}
+				console.error(error);
 			}
 			break;
 		default:

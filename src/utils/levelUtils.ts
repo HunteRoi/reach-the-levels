@@ -1,56 +1,83 @@
-import { Level } from 'models';
 import { round } from './mathUtils';
 import {
 	calculateCompletionRate as calculateStepsCompletionRate,
 	calculateCompletionRateWithoutOptionals as calculateStepsCompletionRateWithOptionals,
+	calculateNumberOfDoneSteps,
+	calculateNumberOfNonOptionalDoneSteps,
 } from '@utils/stepUtils';
+import { NullableLevels, LevelWithSteps, Step } from 'data/models';
 
-export function levelIsDone(level: Level): boolean {
+export function levelIsDone(level: LevelWithSteps): boolean {
 	return nonOptionalStepsAreDone(level);
 }
 
-export function levelIsFullyDone(level: Level): boolean {
+export function levelIsFullyDone(level: LevelWithSteps): boolean {
 	return allStepsAreDone(level);
 }
 
-export function nonOptionalStepsAreDone(level: Level): boolean {
+export function nonOptionalStepsAreDone(level: LevelWithSteps): boolean {
+	if (!level) throw new Error('No level');
+	if (!level.steps) throw new Error("No level's steps");
+
 	return level.steps
-		.filter((step) => !step.optional)
-		.every((step) => step.done);
+		.filter((step: Step) => !step.optional)
+		.every((step: Step) => step.done);
 }
 
-export function allStepsAreDone(level: Level): boolean {
+export function allStepsAreDone(level: LevelWithSteps): boolean {
+	if (!level) throw new Error('No level');
+	if (!level.steps) throw new Error("No level's steps");
+
 	return level.steps.every((step) => step.done);
 }
 
-export function calculateCompletionRate(levels: Level[]): number {
-	const numberOfLevels = levels.length;
-	const numberOfDoneLevels = levels.reduce(
-		(seed, level) => (seed += levelIsFullyDone(level) ? 1 : 0),
+export function calculateCompletionRate(levels: NullableLevels): number {
+	if (!levels) throw new Error('No levels');
+
+	const numberOfSteps = levels.reduce(
+		(seed, level) => (seed += level.steps?.length ?? 0),
 		0
 	);
-	return numberOfLevels === 0
+	const numberOfDoneSteps = levels.reduce(
+		(seed, level) => (seed += calculateNumberOfDoneSteps(level.steps)),
+		0
+	);
+
+	return numberOfSteps === 0
 		? 0
-		: round(numberOfDoneLevels / numberOfLevels, 3);
+		: round(numberOfDoneSteps / numberOfSteps, 3);
 }
 
 export function calculateCompletionRateWithoutOptionals(
-	levels: Level[]
+	levels: NullableLevels
 ): number {
-	const numberOfLevels = levels.length;
-	const numberOfDoneLevels = levels.reduce(
-		(seed, level) => (seed += levelIsDone(level) ? 1 : 0),
+	if (!levels) throw new Error('No levels');
+
+	const numberOfSteps = levels.reduce(
+		(seed, level) =>
+			(seed += level.steps?.filter((s) => !s.optional).length ?? 0),
 		0
 	);
-	return numberOfLevels === 0
+	const numberOfDoneSteps = levels.reduce(
+		(seed, level) =>
+			(seed += calculateNumberOfNonOptionalDoneSteps(level.steps)),
+		0
+	);
+
+	return numberOfSteps === 0
 		? 0
-		: round(numberOfDoneLevels / numberOfLevels, 3);
+		: round(numberOfDoneSteps / numberOfSteps, 3);
 }
 
 export function generateLevelWithStats(
-	level: Level,
+	level: LevelWithSteps,
 	withSteps: boolean = false
 ) {
+	if (!level) throw new Error('No level');
+	if (!level.steps) throw new Error("No level's steps");
+
+	const steps = withSteps ? level.steps : null;
+
 	return {
 		...level,
 		progress: calculateStepsCompletionRate(level.steps),
@@ -59,6 +86,6 @@ export function generateLevelWithStats(
 		),
 		allStepsDone: allStepsAreDone(level),
 		allNonOptionalStepsDone: nonOptionalStepsAreDone(level),
-		steps: withSteps ? level.steps : [],
+		steps,
 	};
 }

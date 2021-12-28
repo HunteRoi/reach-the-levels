@@ -1,27 +1,27 @@
+import { ProgressiveElement, ProjectWithLevelsAndSteps } from '@data/models';
 import {
 	calculateCompletionRate,
 	calculateCompletionRateWithoutOptionals,
 	generateLevelWithStats,
-	levelIsDone,
-	levelIsFullyDone,
 } from '@utils/levelUtils';
-import { Project } from '@models';
 
 export function generateProjectWithStats(
-	project: Project,
+	project: ProjectWithLevelsAndSteps,
 	withLevels: boolean = false,
 	withSteps: boolean = false
-): Project {
+): ProjectWithLevelsAndSteps & ProgressiveElement {
+	const levels = withLevels
+		? project.levels?.map((level) =>
+				generateLevelWithStats(level, withSteps)
+		  )
+		: null;
+
 	return {
 		...project,
 		progress: calculateCompletionRate(project.levels),
 		progressWithoutOptionals: calculateCompletionRateWithoutOptionals(
 			project.levels
 		),
-		levels: withLevels
-			? project.levels.map((level) =>
-					generateLevelWithStats(level, withSteps)
-			  )
-			: [],
+		levels,
 	};
 }

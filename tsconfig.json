@@ -19,7 +19,7 @@
 		"paths": {
 			"@renderers": ["renderers/"],
 			"@components": ["components/"],
-			"@data": ["data/db.ts"],
+			"@data/*": ["data/*"],
 			"@models": ["models/"],
 			"@styles/*": ["styles/*"],
 			"@utils/*": ["utils/*"],

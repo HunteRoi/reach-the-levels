@@ -1,7 +1,8 @@
+import ProgressiveElement from './ProgressiveElement';
 import DescriptiveElement from './DescriptiveElement';
 import { Step } from './Step';
 
-export interface Level extends DescriptiveElement {
+export interface Level extends DescriptiveElement, ProgressiveElement {
 	id: string;
 	steps: Step[];
 	reward?: string;
@@ -10,7 +11,4 @@ export interface Level extends DescriptiveElement {
 	nextLevelId?: string;
 	previousLevel?: Level;
 	nextLevel?: Level;
-
-	progress: number;
-	progressWithoutOptionals: number;
 }
