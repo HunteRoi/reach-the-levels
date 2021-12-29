@@ -1,15 +1,14 @@
 import React, { useState } from 'react';
 import { Checkbox, FormControlLabel, Tooltip } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import CheckboxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
-import CheckBoxIcon from '@mui/icons-material/CheckBox';
+import { CheckBoxOutlineBlank, CheckBox } from '@mui/icons-material';
 
 import { Step } from '@models';
 
-const OptionalCheckboxOutlineBlankIcon = styled(CheckboxOutlineBlankIcon)({
+const OptionalCheckboxOutlineBlankIcon = styled(CheckBoxOutlineBlank)({
 	opacity: 0.5,
 });
-const OptionalCheckboxIcon = styled(CheckBoxIcon)({
+const OptionalCheckboxIcon = styled(CheckBox)({
 	opacity: 0.5,
 });
 
@@ -23,6 +22,7 @@ export const StepComponent: React.FC<Prop> = ({
 	name,
 	description,
 	optional,
+	points,
 	handleChange,
 }) => {
 	const [checked, setChecked] = useState(done);
@@ -35,34 +35,36 @@ export const StepComponent: React.FC<Prop> = ({
 		}
 	};
 
-	return (
+	const mainComponent = (
+		<FormControlLabel
+			control={
+				<Checkbox
+					checked={checked}
+					onChange={onChange}
+					name={name}
+					id={id}
+					required={!optional}
+					icon={
+						optional ? (
+							<OptionalCheckboxOutlineBlankIcon />
+						) : (
+							<CheckBoxOutlineBlank />
+						)
+					}
+					checkedIcon={
+						optional ? <OptionalCheckboxIcon /> : <CheckBox />
+					}
+				/>
+			}
+			label={`${name}${points ? ` - ${points} ☆` : ''}`}
+		/>
+	);
+
+	return description ? (
 		<Tooltip title={description} placement='right-end' describeChild arrow>
-			<FormControlLabel
-				control={
-					<Checkbox
-						checked={checked}
-						onChange={onChange}
-						name={name}
-						id={id}
-						required={!optional}
-						icon={
-							optional ? (
-								<OptionalCheckboxOutlineBlankIcon />
-							) : (
-								<CheckboxOutlineBlankIcon />
-							)
-						}
-						checkedIcon={
-							optional ? (
-								<OptionalCheckboxIcon />
-							) : (
-								<CheckBoxIcon />
-							)
-						}
-					/>
-				}
-				label={name}
-			/>
+			{mainComponent}
 		</Tooltip>
+	) : (
+		mainComponent
 	);
 };

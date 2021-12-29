@@ -5,16 +5,18 @@ import { SnackbarProvider } from 'notistack';
 import styles from './Layout.module.css';
 import { Header } from '../Header';
 import { Footer } from '../Footer';
+import type { Page } from '@models';
 
 type Props = {
 	children?: React.ReactNode;
+	pages: Page[];
 };
 
-export function Layout({ children }: Props) {
+export function Layout({ children, pages }: Props) {
 	return (
 		<SnackbarProvider maxSnack={3}>
 			<div className={styles.container}>
-				<Header />
+				<Header pages={pages} />
 
 				<Container
 					maxWidth='lg'

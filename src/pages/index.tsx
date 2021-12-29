@@ -1,112 +1,69 @@
-import React, { useState } from 'react';
+import React from 'react';
 import type { NextPage } from 'next';
-import useSWR, { Fetcher } from 'swr';
-import axios from 'axios';
-import { IconButton, Typography } from '@mui/material';
-import {
-	DataGrid,
-	GridEnrichedColDef,
-	GridValueFormatterParams,
-} from '@mui/x-data-grid';
-import OpenInNewIcon from '@mui/icons-material/OpenInNew';
+import { Stack, Button, Typography } from '@mui/material';
 
-import { renderProgress } from '@renderers';
-import {
-	ErrorComponent,
-	Link,
-	LoadingComponent,
-	NoRowsOverlay,
-} from '@components';
-import { PaginatedResponse, Project, ErrorResponse } from '@models';
-
-const fetcher: Fetcher<PaginatedResponse<Project>, string> = (url: string) =>
-	axios.get(url).then((res) => res.data);
-
-const columns: GridEnrichedColDef[] = [
-	{
-		field: 'name',
-		headerName: 'Name',
-		flex: 1,
-		headerAlign: 'center',
-		align: 'center',
-		minWidth: 100,
-	},
-	{
-		field: 'description',
-		headerName: 'Description',
-		flex: 1,
-		headerAlign: 'center',
-		align: 'center',
-		valueFormatter: (params: GridValueFormatterParams) =>
-			params.value ? params.value : 'N/A',
-		minWidth: 200,
-	},
-	{
-		field: 'progress',
-		headerName: 'Progress',
-		flex: 1,
-		type: 'number',
-		renderCell: renderProgress,
-		minWidth: 80,
-	},
-	{
-		field: 'progressWithoutOptionals',
-		headerName: 'Progress (without optional steps)',
-		flex: 1,
-		type: 'number',
-		renderCell: renderProgress,
-		minWidth: 150,
-	},
-	{
-		field: 'id',
-		headerName: 'Actions',
-		renderCell: (params) => {
-			return (
-				<IconButton
-					color='primary'
-					disableRipple
-					LinkComponent={Link}
-					href={`/projects/${params.value}`}>
-					<OpenInNewIcon />
-				</IconButton>
-			);
-		},
-	},
-];
+import { Link, pages } from '@components';
 
 const Home: NextPage = () => {
-	const [pageSize, setPageSize] = useState(10);
-	const [page, setPage] = useState(0);
-
-	const { data, error } = useSWR<PaginatedResponse<Project>, ErrorResponse>(
-		`/api/projects?pageSize=${pageSize}&page=${page}`,
-		fetcher
-	);
-
-	if (error) return <ErrorComponent text={error.message} />;
-	if (!data) return <LoadingComponent />;
-
 	return (
-		<div style={{ height: 400, width: '100%' }}>
-			<Typography variant='h4' align='center' sx={{ py: 2 }}>
-				Projects
+		<div style={{ minHeight: 100, width: '100%' }}>
+			<Typography variant='h2' align='center' sx={{ py: 1 }}>
+				Reach The Levels
 			</Typography>
-			<DataGrid
-				columns={columns}
-				rows={data.items ?? []}
-				rowCount={data.count}
-				loading={!data}
-				page={data.page}
-				pageSize={data.pageSize}
-				rowsPerPageOptions={[1, 5, 10, 20, 100]}
-				paginationMode='server'
-				onPageChange={(newPage) => setPage(newPage)}
-				onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
-				pagination
-				components={{
-					NoRowsOverlay: NoRowsOverlay,
-				}}
-			/>
+
+			<Typography variant='h4' align='center' sx={{ py: 1.2 }}>
+				A system that motivates anyone to keep working on a project
+				until the end!
+			</Typography>
+
+			<Typography
+				paragraph
+				variant='h6'
+				align='center'
+				sx={{
+					width: '60%',
+					margin: 'auto',
+					fontWeight: 'normal',
+					textAlign: 'justify',
+					py: 2,
+				}}>
+				Initialy built to motivate trainees working on topics that might
+				not be really interesting (and also because I know what it is to
+				work on something boring), I decided to make this project
+				open-source and let anyone use it at free will to motivate their
+				employees, students or even themselves to start a project and
+				finish it.
+			</Typography>
+
+			<Typography
+				paragraph
+				variant='h4'
+				align='center'
+				sx={{
+					width: '60%',
+					margin: 'auto',
+					py: 0.5,
+				}}>
+				Let&apos;s get started!
+			</Typography>
+
+			<Stack
+				direction={{ xs: 'column', sm: 'row' }}
+				spacing={{ xs: 1, sm: 2, md: 4 }}
+				justifyContent='center'
+				alignItems='center'
+				sx={{ py: 0.5 }}>
+				{pages.map((page, index) => (
+					<Button
+						key={index}
+						component={Link}
+						href={page.href}
+						variant={index === 0 ? 'contained' : 'outlined'}
+						startIcon={page.icon}>
+						{page.title}
+					</Button>
+				))}
+			</Stack>
 		</div>
 	);
 };

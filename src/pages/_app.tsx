@@ -10,6 +10,7 @@ import '@styles/globals.css';
 import { Layout } from '@components';
 import createEmotionCache from '@utils/createEmotionCache';
 import theme from '@styles/theme';
+import { pages } from '@components';
 
 type NextPageWithLayout = NextPage & {
 	getLayout?: (page: ReactElement) => ReactNode;
@@ -49,7 +50,7 @@ function MyApp({
 					{/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
 					<CssBaseline />
 
-					<Layout>{page}</Layout>
+					<Layout pages={pages}>{page}</Layout>
 				</ThemeProvider>
 			</CacheProvider>
 		));

@@ -16,6 +16,7 @@ model Step {
   description String
   done        Boolean
   optional    Boolean
+  points      Int?
   levelId     String?
   Level       Level?  @relation(fields: [levelId], references: [id])
 }
@@ -23,8 +24,7 @@ model Step {
 model Level {
   id            String  @id @default(cuid())
   name          String
-  description   String
-  reward        String?
+  description   String?
   projectId     String
   steps         Step[]
   Project       Project @relation(fields: [projectId], references: [id])
@@ -36,6 +36,16 @@ model Level {
 model Project {
   id          String  @id @default(cuid())
   name        String
-  description String
+  description String?
   levels      Level[]
+}
+
+model Reward {
+  id          String  @id @default(cuid())
+  name        String
+  description String?
+  cost        Int
+  imageURL    String?
+  likes       Int     @default(0)
+  externalURL String?
 }

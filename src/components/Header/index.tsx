@@ -1,23 +1,46 @@
 import React from 'react';
-import { AppBar, Toolbar, Container } from '@mui/material';
-import InsightsIcon from '@mui/icons-material/Insights';
+import { AppBar, Toolbar, Container, Button, Typography } from '@mui/material';
+import { Insights } from '@mui/icons-material';
 
 import { Link } from '@components';
+import type { Page } from '@models';
 
-export const Header: React.FC = () => {
+type Props = {
+	pages: Page[];
+};
+
+export const Header: React.FC<Props> = ({ pages }) => {
 	return (
 		<AppBar position='fixed' color='primary'>
 			<Container maxWidth='xl'>
 				<Toolbar disableGutters>
 					<Link
-						variant='h6'
+						variant='h5'
 						color='secondary.main'
 						href='/'
-						align='center'
 						sx={{ flexGrow: 1 }}
 						underline='none'>
-						<InsightsIcon /> REACH THE LEVELS
+						<Insights />
+
+						<Typography
+							variant='h6'
+							component='span'
+							color='secondary.main'
+							sx={{ paddingLeft: 2, flexGrow: 1 }}>
+							REACH THE LEVELS
+						</Typography>
 					</Link>
+
+					{pages.map((page: Page, index) => (
+						<Button
+							key={index}
+							component={Link}
+							href={page.href}
+							color='secondary'
+							startIcon={page.icon}>
+							{page.title}
+						</Button>
+					))}
 				</Toolbar>
 			</Container>
 		</AppBar>

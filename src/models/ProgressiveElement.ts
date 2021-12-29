@@ -1,4 +1,4 @@
-export default interface ProgressiveElement {
+export interface ProgressiveElement {
 	progress: number;
-	progressWithoutOptional: number;
+	progressWithoutOptionals: number;
 }

@@ -27,6 +27,16 @@ const theme = createTheme(
 					},
 				},
 			},
+			MuiPagination: {
+				styleOverrides: {
+					root: {
+						'& > *': {
+							justifyContent: 'center',
+							display: 'flex',
+						},
+					},
+				},
+			},
 		},
 	},
 	enUS

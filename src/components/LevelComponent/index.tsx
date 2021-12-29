@@ -8,7 +8,7 @@ import {
 	TimelineContent,
 	TimelineOppositeContent,
 } from '@mui/lab';
-import DiamondIcon from '@mui/icons-material/Diamond';
+import { Diamond } from '@mui/icons-material';
 
 import { LevelWithSteps } from '@data/models';
 import { Level, Step } from '@models';
@@ -64,7 +64,7 @@ export const LevelComponent: React.FC<Prop> = ({
 				<TimelineDot
 					variant={getVariant(level)}
 					color={getColor(level)}>
-					<DiamondIcon sx={{ paddingTop: '2px' }} />
+					<Diamond sx={{ paddingTop: '2px' }} />
 				</TimelineDot>
 
 				{!isLast && (
@@ -81,13 +81,11 @@ export const LevelComponent: React.FC<Prop> = ({
 					{level.name}
 				</Typography>
 				{level.description && (
-					<Typography variant='subtitle1'>
-						{level.description}
-					</Typography>
+					<Typography variant='body1'>{level.description}</Typography>
 				)}
-				{level.reward && (
-					<Typography variant='caption'>
-						Worth this reward: {level.reward}
+				{(level?.totalPoints ?? 0) > 0 && (
+					<Typography variant='subtitle2'>
+						{level.totalPoints} ☆ worth
 					</Typography>
 				)}
 			</TimelineContent>

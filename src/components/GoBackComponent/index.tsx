@@ -1,7 +1,7 @@
 import React from 'react';
 import { useRouter } from 'next/router';
 import { Fab } from '@mui/material';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { ArrowBack } from '@mui/icons-material';
 
 export function GoBackComponent() {
 	const router = useRouter();
@@ -12,7 +12,7 @@ export function GoBackComponent() {
 			onClick={() => router.back()}
 			aria-label='navigate back'
 			sx={{ position: 'fixed', bottom: 66, right: 116 }}>
-			<ArrowBackIcon />
+			<ArrowBack />
 			Back
 		</Fab>
 	);

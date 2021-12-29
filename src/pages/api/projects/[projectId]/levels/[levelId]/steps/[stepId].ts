@@ -31,11 +31,8 @@ import {
  *         required: true
  *         type: string
  *     responses:
- *       200:
- *         description: Your request went well and you receive the updated project's level.
- *         schema:
- *           type: object
- *           $ref: '#/definitions/Level'
+ *       202:
+ *         description: Your request went well.
  *       400:
  *         description: Your request did not go well and you receive the error message.
  *         schema:

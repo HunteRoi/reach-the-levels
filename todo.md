@@ -1,2 +1,0 @@
-- chaque étape rapporte des points
-- acheter des récompenses avec des points

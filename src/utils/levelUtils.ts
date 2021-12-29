@@ -6,6 +6,7 @@ import {
 	calculateNumberOfNonOptionalDoneSteps,
 } from '@utils/stepUtils';
 import { NullableLevels, LevelWithSteps, Step } from 'data/models';
+import { ProgressiveElement } from '@models';
 
 export function levelIsDone(level: LevelWithSteps): boolean {
 	return nonOptionalStepsAreDone(level);
@@ -72,11 +73,17 @@ export function calculateCompletionRateWithoutOptionals(
 export function generateLevelWithStats(
 	level: LevelWithSteps,
 	withSteps: boolean = false
-) {
+): LevelWithSteps &
+	ProgressiveElement & {
+		allStepsDone: boolean;
+		allNonOptionalStepsDone: boolean;
+		totalPoints?: number;
+	} {
 	if (!level) throw new Error('No level');
 	if (!level.steps) throw new Error("No level's steps");
 
 	const steps = withSteps ? level.steps : null;
+	const totalPoints = calculateTotalPoints(level);
 
 	return {
 		...level,
@@ -87,5 +94,23 @@ export function generateLevelWithStats(
 		allStepsDone: allStepsAreDone(level),
 		allNonOptionalStepsDone: nonOptionalStepsAreDone(level),
 		steps,
+		totalPoints,
 	};
+}
+
+export function calculateTotalPoints(level: LevelWithSteps): number {
+	if (!level) throw new Error('No level');
+	if (!level.steps) throw new Error('No steps');
+
+	return level.steps.reduce((seed, step) => (seed += step?.points ?? 0), 0);
+}
+
+export function calculateWonPoints(level: LevelWithSteps): number {
+	if (!level) throw new Error('No level');
+	if (!level.steps) throw new Error('No steps');
+
+	return level.steps.reduce(
+		(seed, step) => (seed += step?.done ? step?.points ?? 0 : 0),
+		0
+	);
 }

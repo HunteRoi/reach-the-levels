@@ -18,6 +18,8 @@ import { generateProjectWithStats } from '@utils/projectUtils';
  *         type: boolean
  *       optional:
  *         type: boolean
+ *       points:
+ *         type: number
  *
  *   Level:
  *     properties:
@@ -27,12 +29,12 @@ import { generateProjectWithStats } from '@utils/projectUtils';
  *         type: string
  *       description:
  *         type: string
- * 			 reward:
- * 				 type: string
- * 			 progress:
- * 				 type: number
- * 	     progressWithoutOptionals:
- * 			   type: number
+ *       totalPoints:
+ *         type: number
+ *       progress:
+ *         type: number
+ *       progressWithoutOptionals:
+ *         type: number
  *       steps:
  *         type: array
  *         $ref: '#/definitions/Step'
@@ -43,12 +45,12 @@ import { generateProjectWithStats } from '@utils/projectUtils';
  *         type: string
  *       name:
  *         type: string
- * 			 description:
- * 				 type: string
- * 			 progress:
- * 				 type: number
- * 	     progressWithoutOptionals:
- * 			   type: number
+ *       description:
+ *         type: string
+ *       progress:
+ *         type: number
+ *       progressWithoutOptionals:
+ *         type: number
  *       levels:
  *         type: array
  *         $ref: '#/definitions/Level'
@@ -77,7 +79,7 @@ import { generateProjectWithStats } from '@utils/projectUtils';
  *       - application/json
  *     responses:
  *       200:
- *         description: Your request went well and you receive an array of projects.
+ *         description: Your request went well and you receive a pagination object of projects.
  *         schema:
  *           type: array
  *           $ref: '#/definitions/Project'
@@ -122,7 +124,7 @@ export default async function handler(
 				});
 
 				res.status(200).json({
-					page: pageNb,
+					page: realPageNumber,
 					pageSize: take,
 					count,
 					items: projects.map((project) =>
